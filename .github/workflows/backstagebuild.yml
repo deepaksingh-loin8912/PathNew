@@ -79,3 +79,16 @@ jobs:
         working-directory: ./mybackstage
         run: |
           docker build -f packages/backend/Dockerfile -t backstage . --load
+
+      - name: Save Docker Image as TAR
+        working-directory: ./mybackstage
+        run: |
+          mkdir -p docker_images
+          docker save backstage:latest -o docker_images/backstage.tar
+
+      - name: Upload Backstage Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backstage-image
+          path: docker_images/backstage.tar
+          
